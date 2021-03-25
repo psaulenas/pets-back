@@ -67,3 +67,13 @@ INSERT INTO animal_event_general
 INSERT INTO animal_event_medical_record
 (animal, type, expenses, date_time, comments) VALUES
 (4, '8', 26.74, '2020-05-21', 'Yearly vaccine');
+
+--- ITEM
+
+INSERT INTO animal_item (animal_id, item_name)
+VALUES
+(1, 'Liemenė'),
+(1, 'Akiniai nuo saulės'),
+(3, 'Šukos'),
+(4, 'Draskyklė'),
+(5, 'Bėgimo ratelis');

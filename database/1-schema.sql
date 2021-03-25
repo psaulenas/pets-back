@@ -224,6 +224,14 @@ CREATE TABLE former_animal_owner (
     phone VARCHAR(64)
 );
 
+-- WORKSHOP
+
+CREATE TABLE animal_item (
+    id SERIAL PRIMARY KEY,
+    animal_id INTEGER REFERENCES animal(id) ON DELETE CASCADE NOT NULL,
+    item_name VARCHAR(128)
+);
+
 -- EVENTS
 
 CREATE TYPE event AS ENUM ('1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11');
