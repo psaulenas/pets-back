@@ -13,3 +13,7 @@ type BreedTranslation {
     language: String!
     translation: String!
 }
+
+type Subscription {
+    breedTranslationCreated: BreedTranslation
+}

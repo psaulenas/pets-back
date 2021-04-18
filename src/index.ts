@@ -83,8 +83,10 @@ initClients().then(({ pgClient, cloudinaryClient }) => {
         fieldResolver: snakeCaseFieldResolver,
         context: { pgClient, cloudinaryClient },
     });
+    const httpServer = http.createServer(app);
 
     server.applyMiddleware({ app });
+    server.installSubscriptionHandlers(httpServer);
 
     const httpServer = http.createServer(app);
     server.installSubscriptionHandlers(httpServer);
