@@ -7,6 +7,7 @@ import animalDetailsResolvers from './resolvers/animalDetails';
 import genderResolvers from './resolvers/gender';
 import statusResolvers from './resolvers/status';
 import breedResolvers from './resolvers/breed';
+import breedTranslationResolvers from './resolvers/breedTranslation';
 import speciesResolvers from './resolvers/species';
 import colorResolvers from './resolvers/color';
 import animalMicrochipResolvers from './resolvers/animalMicrochip';
@@ -32,6 +33,7 @@ const schema = loadSchemaSync('src/schema/typeDefs/*.graphql', {
         genderResolvers,
         statusResolvers,
         breedResolvers,
+        breedTranslationResolvers,
         speciesResolvers,
         colorResolvers,
         organizationResolvers,

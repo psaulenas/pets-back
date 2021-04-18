@@ -1,0 +1,15 @@
+type Mutation {
+    createBreedTranslation(input: BreedTranslationInput!): BreedTranslation
+}
+
+input BreedTranslationInput {
+    breed: Int!
+    language: String!
+    translation: String!
+}
+
+type BreedTranslation {
+    breed: Int!
+    language: String!
+    translation: String!
+}
