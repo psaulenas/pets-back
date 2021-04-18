@@ -6,6 +6,7 @@ import jwt from 'express-jwt';
 import jwks from 'jwks-rsa';
 import { graphqlUploadExpress } from 'graphql-upload';
 import http from 'http';
+import responseCachePlugin from 'apollo-server-plugin-response-cache';
 import { version } from '../package.json';
 
 import schema from './schema';
@@ -82,6 +83,7 @@ initClients().then(({ pgClient, cloudinaryClient }) => {
         schema,
         fieldResolver: snakeCaseFieldResolver,
         context: { pgClient, cloudinaryClient },
+        plugins: [responseCachePlugin()],
     });
     const httpServer = http.createServer(app);
 

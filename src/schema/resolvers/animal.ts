@@ -73,8 +73,9 @@ const resolvers: IResolvers = {
             const dbResponse = await pgClient.query(getAnimalsQuery(ids));
             return dbResponse.rows;
         },
-        animal: async (_, { id }, { pgClient }) => {
+        animal: async (_, { id }, { pgClient }, info) => {
             const dbResponse = await pgClient.query(getAnimalQuery(id));
+            info.cacheControl.setCacheHint({ maxAge: 60 });
             return dbResponse.rows[0];
         },
     },
