@@ -1,4 +1,5 @@
 import { IResolvers } from 'graphql-tools';
+import { Validator } from 'node-input-validator';
 import {
     getAnimalFoundEventsQuery,
     createAnimalFoundEventQuery,
@@ -15,6 +16,21 @@ const resolvers: IResolvers = {
     },
     Mutation: {
         createFoundEvent: async (_, { input }, { pgClient }) => {
+            const createFoundEventInputValidator = new Validator(input, {
+                date: 'date|dateBeforeToday:0,days',
+                street: 'maxLength:255',
+                houseNo: 'maxLength:8',
+            });
+
+            const isCreateFoundEventInputValid =
+                await createFoundEventInputValidator.check();
+
+            if (!isCreateFoundEventInputValid) {
+                throw new Error(
+                    JSON.stringify(createFoundEventInputValidator.errors)
+                );
+            }
+
             const createFoundEventResult = await pgClient.query(
                 createAnimalFoundEventQuery(input)
             );
