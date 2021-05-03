@@ -1,5 +1,8 @@
 import { IResolvers } from 'graphql-tools';
-import getAnimalFoundEventsQuery from '../../sql-queries/animalEventFound';
+import {
+    getAnimalFoundEventsQuery,
+    createAnimalFoundEventQuery,
+} from '../../sql-queries/animalEventFound';
 
 const resolvers: IResolvers = {
     Query: {
@@ -8,6 +11,15 @@ const resolvers: IResolvers = {
                 getAnimalFoundEventsQuery()
             );
             return dbResponse.rows;
+        },
+    },
+    Mutation: {
+        createFoundEvent: async (_, { input }, { pgClient }) => {
+            const createFoundEventResult = await pgClient.query(
+                createAnimalFoundEventQuery(input)
+            );
+
+            return createFoundEventResult.rows[0];
         },
     },
 };
