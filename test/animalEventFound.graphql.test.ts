@@ -38,4 +38,127 @@ describe('Animal Event Found', () => {
                 return done();
             });
     });
+
+    it('successfully creates animal found', (done) => {
+        request
+            .post('/graphql')
+            .send({
+                query: `mutation {
+                    createFoundEvent(
+                      input: {
+                        street: "Gyvūnų gatvė"
+                        houseNo: "58"
+                        municipalityId: 5
+                        date: "2021-05-03"
+                        animalId: 4
+                        comments: "Dog was found dirty and hungry"
+                      }
+                    ) {
+                      id
+                      street
+                      houseNo
+                      municipalityId
+                      date
+                      animalId
+                      comments
+                    }
+                  }
+                  `,
+            })
+            .expect(200)
+            .end((err, res) => {
+                if (err) {
+                    // eslint-disable-next-line no-console
+                    console.log(res.body);
+                    return done(err);
+                }
+                const expectedResponse = {
+                    street: 'Gyvūnų gatvė',
+                    houseNo: '58',
+                    municipalityId: 5,
+                    animalId: 4,
+                    comments: 'Dog was found dirty and hungry',
+                };
+                expect(res.body.data.createFoundEvent).to.deep.include(
+                    expectedResponse
+                );
+                return done();
+            });
+    });
+
+    it('error is returned if houseNo is more than 8 characters', (done) => {
+        request
+            .post('/graphql')
+            .send({
+                query: `mutation {
+                    createFoundEvent(
+                      input: {
+                        street: "Gyvūnų gatvė"
+                        houseNo: "123456789"
+                        municipalityId: 5
+                        date: "2021-05-03"
+                        animalId: 4
+                        comments: "Dog was found dirty and hungry"
+                      }
+                    ) {
+                      id
+                      street
+                      houseNo
+                      municipalityId
+                      date
+                      animalId
+                      comments
+                    }
+                  }
+                  `,
+            })
+            .expect(200)
+            .end((err, res) => {
+                if (err) {
+                    // eslint-disable-next-line no-console
+                    console.log(res.body);
+                    return done(err);
+                }
+                expect(res.body.errors[0].message).to.include('The house no can not be greater than 8.');
+                return done();
+            });
+    });
+
+    it('error is returned if date is invalid', (done) => {
+        request
+            .post('/graphql')
+            .send({
+                query: `mutation {
+                    createFoundEvent(
+                      input: {
+                        street: "Gyvūnų gatvė"
+                        houseNo: "58"
+                        municipalityId: 5
+                        date: "2021-05-80"
+                        animalId: 4
+                        comments: "Dog was found dirty and hungry"
+                      }
+                    ) {
+                      id
+                      street
+                      houseNo
+                      municipalityId
+                      date
+                      animalId
+                      comments
+                    }
+                  }
+                  `,
+            })
+            .expect(400)
+            .end((err, res) => {
+                if (err) {
+                    // eslint-disable-next-line no-console
+                    console.log(res.body);
+                    return done(err);
+                }
+                expect(res.body.errors[0].message).to.include('Invalid time value');
+                return done();
+            });
+    });
 });
